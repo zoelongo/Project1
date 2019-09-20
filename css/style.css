@@ -1,0 +1,21 @@
+h1 {
+    text-align: center;
+    font-family: fantasy;
+    color: azure;
+    background-color: grey;
+    padding-bottom: 40px;
+    margin-top: 20px;
+}
+
+image {
+    padding: 20px;
+}
+
+footer {
+    text-align: center;
+    font-family: fantasy;
+    background-color: grey;
+    padding-top: 50px;
+    color: azure;
+    font-size: 150%;
+}
