@@ -6,15 +6,15 @@
 
 //build queryKey//Lat-Long
 // var key1 = "200596500-c627d9f7783f081d34b8bd993d2abd94"
-// var queryUrl = "https://www.hikingproject.com/data/get-trails?lat=" + latitude + "&lon=" + longitude + "&maxDistance=10&key=" + key1 + ""
 
-// Initialize and add the map
+
+// Initialize map
 function initMap() {
     // The location of Uluru
-    var uluru = { lat: -39.5501, lng: 105.7821 };
+    var uluru = { lat: 39.5501, lng: 105.7821 };
     // The map, centered at Uluru
     var map = new google.maps.Map(
-        document.getElementById('map'), { zoom: 8, center: uluru });
+        document.getElementById('map'), { zoom: 13, center: uluru });
     // The marker, positioned at Uluru
     var marker = new google.maps.Marker({ position: uluru, map: map });
 }
@@ -34,10 +34,10 @@ firebase.initializeApp(firebaseConfig);
 var dataRef = firebase.database();
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 0, lng: 0 },
+        center: { lat: 39.5501, lng: 105.7821 },
         zoom: 8
     });
-    //buttons//
+    
     $("button").on('click', function (event) {
         event.preventDefault()
 
@@ -63,7 +63,7 @@ function initMap() {
     function initialize() {
         var mapOptions = {
             zoom: 8,
-            center: { lat: 44.2643, lng: 109.7870}
+            center: { lat: 39.5501, lng: 105.7821 }
         };
         map = new google.maps.Map(document.getElementById('map'),
             mapOptions);
@@ -71,10 +71,11 @@ function initMap() {
         var marker = new google.maps.Marker({
             // The below line is equivalent to writing:
             // position: new google.maps.LatLng(-34.397, 150.644)
-            position: { lat: 44.2643, lng: 109.7870 },
+            position: { lat: 39.5501, lng: 105.7821 },
             map: map
         });
-
+        https://robwu.nl/cors-anywhere.html
+ 
         // You can use a LatLng literal in place of a google.maps.LatLng object when
         // creating the Marker object. Once the Marker object is instantiated, its
         // position will be available as a google.maps.LatLng object. In this case,
@@ -98,7 +99,24 @@ function initMap() {
             'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
     }
+    
+};
+
+function displayTrails() {
 
 
+    var queryURL = "https://robwu.nl/cors-anywhere.html/https://www.hikingproject.com/data/get-trails?lat=" + latitude + "&lon=" + longitude + "&maxDistance=10&key=200596506-26bc833d725fdffcceae29661683dbd8"
+    var trails = $(this).attr("data-name")
+    var latitude= 39.5501;
+    var longitude= 105.7821;
 
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (response) {
+        console.log(response);
+    })
+
+    displayTrails()
+    
 }
