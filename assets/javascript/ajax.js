@@ -59,22 +59,7 @@ function initMap() {
 
         //declare variables
         console.log("clicked");
-        //using lat/long on google map's api//
-
-
-        //AJAX request do we need? //to thr hiking api// create push pins
-
-        // $.ajax({
-        //     url: queryURL,
-        //     method: "GET"
-        // })
-        //     .then(function (response) {
-        //         var requests = response.data;
-        //         // var rating = requests[i].rating;
-        //         console.log(response)
-        //         makeajaxCall(requests);
-        //     });
-    })
+        
     var map;
     function initialize() {
         var mapOptions = {
