@@ -2,86 +2,101 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
-    <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
+  <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
 
-    <title>Hike-ME</title>
-   
-        <style>
-          /* Always set the map height explicitly to define the size of the div
+  <title>Hike-ME</title>
+  
+  <style>
+    /* Always set the map height explicitly to define the size of the div
            * element that contains the map. */
-          #map {
-            height: 350px;
-            width: 680px;
-          }
-          /* Optional: Makes the sample page fill the window. */
-          html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-          }
-        </style>
-      </head>
-      <body>
-        <div id="map"></div>
-        <input id="Address" type="text" style="width: 600px;"><br/>
-        <input type="text" id="Latitude" placeholder="Latitude"/>
-        <input type="text" id="Longitude" placeholder="Longitude"/> 
-        <script>
-          // Note: This example requires that you consent to location sharing when
-          // prompted by your browser. If you see the error "The Geolocation service
-          // failed.", it means you probably did not give permission for the browser to
-          // locate you.
-          var map, infoWindow;
-          function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-              center: {lat: 44.2643, lng: 109.7870},
-              zoom: 6
-            });
-            infoWindow = new google.maps.InfoWindow;
-    
+    #map {
+      height: 350px;
+      width: 680px;
+    }
+
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <h3 id="lat"></h3>
+  <h3 id="lng"></h3>
+  <!-- $("#lat").text(pos.lat) -->
+  <input id="Address" type="text" style="width: 600px;"><br />
+  <input type="text" id="Latitude" placeholder="Latitude" />
+  <input type="text" id="Longitude" placeholder="Longitude" />
+  <script>
+    // Note: This example requires that you consent to location sharing when
+    // prompted by your browser. If you see the error "The Geolocation service
+    // failed.", it means you probably did not give permission for the browser to
+    // locate you.
+    var map, infoWindow;
+    function initMap() {
+      var latinfo = new google.maps.LatLng(28.631451, 77.216667);
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 39.5501, lng: -105.7821  },
+        zoom: 8
+      });
+      infoWindow = new google.maps.InfoWindow;
+
+      var marker = new google.maps.Marker({
+        map: map,
+        position: latinfo,
+        draggable: false,
+        animation: google.maps.Animation.BOUNCE,
+        anchorPoint: new google.maps.Point(0, -29)
+      })
             // Try HTML5 geolocation.
-            if (navigator.geolocation) {
-              navigator.geolocation.getCurrentPosition(function(position) {
-                var pos = {
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude
-                };
-    
-                infoWindow.setPosition(pos);
-                infoWindow.setContent('Location found.');
-                infoWindow.open(map);
-                map.setCenter(pos);
-              }, function() {
-                handleLocationError(true, infoWindow, map.getCenter());
-              });
-            } else {
-              // Browser doesn't support Geolocation
-              handleLocationError(false, infoWindow, map.getCenter());
-            }
-          }
-    
-          function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            if(navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
             infoWindow.setPosition(pos);
-            infoWindow.setContent(browserHasGeolocation ?
-                                  'Error: The Geolocation service failed.' :
-                                  'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.setContent('Location found.');
             infoWindow.open(map);
+            map.setCenter(pos);
+          }, function () {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
           }
-        </script>
-        <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyp7bpK6RfNdcRxbAD33R3GDLqhKAfico&callback=initMap&callback=initMap">
-        </script>
-      </body>
-    </html>
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(browserHasGeolocation ?
+        'Error: The Geolocation service failed.' :
+        'Error: Your browser doesn\'t support geolocation.');
+      infoWindow.open(map);
+    }
+  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyp7bpK6RfNdcRxbAD33R3GDLqhKAfico&callback=initMap&callback=initMap">
+    </script>
+</body>
+
+</html>
 
 
 
@@ -93,9 +108,8 @@
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="assets/javascript/ajax.js"></script>
 <!-- <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyp7bpK6RfNdcRxbAD33R3GDLqhKAfico&callback=initMap"></script>
 <!-- </body> -->
-

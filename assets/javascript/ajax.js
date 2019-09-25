@@ -2,7 +2,7 @@
 //  AIzaSyDyp7bpK6RfNdcRxbAD33R3GDLqhKAfico&callback=initMap //
 
 //https key//
-// ""https://maps.googleapis.com/maps/api/js?key=AIzaSyCcF1CUzKzcoWX96CTe1rgms1qhFd1vG7w&callback=initMap"
+// https://maps.googleapis.com/maps/api/js?key=AIzaSyCcF1CUzKzcoWX96CTe1rgms1qhFd1vG7w&callback=initMap"
 
 //build queryKey//Lat-Long
 // var key1 = "200596500-c627d9f7783f081d34b8bd993d2abd94"
@@ -11,27 +11,43 @@
 // Initialize map
 function initMap() {
     // The location of Uluru
-    var uluru = { lat: 39.5501, lng: 105.7821 };
+    var uluru = { lat: 39.5501, lng: -105.7821 };
     // The map, centered at Uluru
     var map = new google.maps.Map(
         document.getElementById('map'), { zoom: 13, center: uluru });
     // The marker, positioned at Uluru
     var marker = new google.maps.Marker({ position: uluru, map: map });
 }
+// function showCoordinates(pt) {
+//     var coords= "Lat/Lon" + pt.latitude.toFixed(3) + " " + pt.longitude. toFixed(3) +
+//     " | Scale 1:" + Math.round(view.scale * 1) / 1 +
+//     " | Zoom " + view.zoom;
+//     coordsWidget.innerHTML = coords;
+// }
+//     view.watch("stationary", function(isStaionary) {
+//         showCoordinates(view.center); 
+//     });
+//     view.on("pointer-move", function(evt){
+//         showCoordinates(view.toMap({x: evt.x, y: evt.y}));
+
+//     })
+
 //Initialize Firebase//
 // $(document).ready(function () {
-var firebaseConfig = {
-    apiKey: "AIzaSyBi-O17PsVdUQGHlfY3qhoiIBpnbuKWpM4",
-    authDomain: "test-7d555.firebaseapp.com",
-    databaseURL: "https://test-7d555.firebaseio.com",
-    projectId: "test-7d555",
-    storageBucket: "",
-    messagingSenderId: "98104578426",
-    appId: "1:98104578426:web:c2908835db8c009512c6c3"
-};
-
+  var firebaseConfig = {
+    apiKey: "AIzaSyD3vOFzshYJCIBKj-wEFNysiefURSk-2F0",
+    authDomain: "hike-me.firebaseapp.com",
+    databaseURL: "https://hike-me.firebaseio.com",
+    projectId: "hike-me",
+    storageBucket: "hike-me.appspot.com",
+    messagingSenderId: "167020905765",
+    appId: "1:167020905765:web:b9dd632c342c7ab58746cc",
+    measurementId: "G-NDPQS142Y4"
+  };
+ 
 firebase.initializeApp(firebaseConfig);
 var dataRef = firebase.database();
+
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 39.5501, lng: 105.7821 },
