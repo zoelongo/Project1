@@ -1,34 +1,167 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Trail.me</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" type="text/css" href="css/style3.css">
-    <link rel="stylesheet" type="text/css" href="images/">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+    integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-app.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
+  <title>Trails</title>
 </head>
 
 <body>
-
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Hike.me
+        <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle btn-lg" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Hike.me
                     </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="index.html">Home.me</a>
-            <a class="dropdown-item" href="map.html">Maps.me</a>
-            <a class="dropdown-item" href="getThere.html">Get-There.me</a>
-        </div>
-    </div>
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="index.html">Home.me</a>
+                        <a class="dropdown-item" href="map.html">Trail.me</a>
+                        <a class="dropdown-item" href="getThere.html">Get-There.me</a>
+                        <!-- <a class="dropdown-item" href="#">Home.Me</a>
+                        <a class="dropdown-item" href="#">Trail.Me</a> -->
+                    </div>
+                </div>
+  <div class="container">
+    <h2 id="text-center">Enter Location: </h2>
+    <form id="location-form">
+      <input type="text" id="location-input" class="form-control form-control-lg">
+      <br>
+      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>
+    <div class="card-block" id="formatted-address"></div>
+    <!-- <div class="card-block" id="address-components"></div> -->
+    <div class="card-block" id="geometry"></div>
+    <h2 id ="text-center">Nearby Trails</h2>
+    <div class="card-block" id="trails-display"></div>
+    
+  </div>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script>
+
+var firebaseConfig = {
+   apiKey: "AIzaSyD3vOFzshYJCIBKj-wEFNysiefURSk-2F0",
+   authDomain: "hike-me.firebaseapp.com",
+   databaseURL: "https://hike-me.firebaseio.com",
+   projectId: "hike-me",
+   storageBucket: "hike-me.appspot.com",
+   messagingSenderId: "167020905765",
+   appId: "1:167020905765:web:b9dd632c342c7ab58746cc",
+   measurementId: "G-NDPQS142Y4"
+};
+
+firebase.initializeApp(firebaseConfig);
+var dataRef = firebase.database();
+
+    // Call Geocode
+    // geocode();
+
+    // Get location form
+    var locationForm = document.getElementById('location-form');
+
+    // Listen for submiot
+    locationForm.addEventListener('submit', geocode);
+
+    function geocode(e) {
+      // Prevent actual submit
+      e.preventDefault();
+
+      var location = document.getElementById('location-input').value;
+
+      axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+        params: {
+          address: location,
+          key: 'AIzaSyDyp7bpK6RfNdcRxbAD33R3GDLqhKAfico'
+        }
+      })
+        .then(function (response) {
+          // Log full response
+          console.log(response);
+
+          // Formatted Address
+          var formattedAddress = response.data.results[0].formatted_address;
+          var formattedAddressOutput = `
+          <ul class="list-group">
+            <li class="list-group-item">${formattedAddress}</li>
+          </ul>
+        `;
+
+          // Address Components
+          var addressComponents = response.data.results[0].address_components;
+          var addressComponentsOutput = '<ul class="list-group">';
+          for (var i = 0; i < addressComponents.length; i++) {
+            addressComponentsOutput += `
+            <li class="list-group-item"><strong>${addressComponents[i].types[0]}</strong>: ${addressComponents[i].long_name}</li>
+          `;
+          }
+          addressComponentsOutput += '</ul>';
+
+          // Geometry
+          var lat = response.data.results[0].geometry.location.lat;
+          var lng = response.data.results[0].geometry.location.lng;
+
+          console.log("lat" + lat, lng)
+          var geometryOutput = `
+          <ul class="list-group">
+            <li class="list-group-item"><strong>Latitude</strong>: ${lat}</li>
+            <li class="list-group-item"><strong>Longitude</strong>: ${lng}</li>
+          </ul>
+        `;
+
+          // Output to app
+          document.getElementById('formatted-address').innerHTML = formattedAddressOutput;
+          // document.getElementById('address-components').innerHTML = addressComponentsOutput;
+          document.getElementById('geometry').innerHTML = geometryOutput;
+          
+        })
+        .catch(function (error) {
+          console.log(error);
+        }).then(function (lat, lng) {
+
+
+
+
+          var queryURL = "https://cors-anywhere.herokuapp.com/https://www.hikingproject.com/data/get-trails?lat=39.6806457&lon=-104.9649087&maxDistance=10&key=200596506-26bc833d725fdffcceae29661683dbd8";
+          $.ajax({
+            url: queryURL,
+            method: "GET"
+          }).then(function (response) {
+            
+            var results = response.trails;
+            console.log(results);
+
+            for (var i = 0; i < results.length; i++) {
+
+            
+              var p = $("<h2>").text(results[i].name);
+                // var align = $("h2").css("text-align left");
+              var summary = $("<p>").text(results[i].summary);
+              //creating a new div to hold the trails
+              
+              var trailDiv = $("<div class = 'trails'>");
+
+              var trailImg = $("<img>")
+              var trailUrl = $("<a>").text(results[i].url)
+              trailImg.attr("src", results[i].imgMedium)
+              trailUrl.attr("src", results[i].url)
+              $("a").attr("href", results[i].url)
+              trailDiv.append(p, trailImg, summary, trailUrl);
+              $("#trails-display").append(trailDiv);
+            }
+          })
+
+        })
+    }
+    // displayTrail()
+  </script>
+  <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 
 </html>
