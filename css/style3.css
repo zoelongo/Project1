@@ -1,5 +1,19 @@
+h1 {
+    text-align: center;
+    font-family: fantasy;
+    color: azure;
+    background-color: grey;
+    padding-bottom: 40px;
+    margin-top: 20px;
+    padding-right: 40px;
+}
+
 body {
-    background-image: url(https://images.unsplash.com/photo-1562112446-297a0d33fdd3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80)
+    background-image: url(https://images.unsplash.com/photo-1532117892888-38948e152b3a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80)
+}
+
+td {
+    color: white;
 }
 
 @media only screen and (min-width: 768px) {

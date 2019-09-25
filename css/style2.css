@@ -16,3 +16,11 @@ body {
     .col-11 {width: 91.66%;}
     .col-12 {width: 100%;}
   }
+h1 {
+    text-align: center;
+    font-family: fantasy;
+    color: azure;
+    background-color: grey;
+    padding-bottom: 40px;
+    margin-top: 20px;
+}
